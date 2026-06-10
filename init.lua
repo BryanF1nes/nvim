@@ -37,6 +37,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
+vim.opt.exrc = true
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -303,6 +304,21 @@ require('lazy').setup({
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
+      vim.filetype.add { extension = { ejs = 'ejs' } }
+
+      vim.lsp.config('emmet_ls', {
+        filetypes = {
+          'html',
+          'css',
+          'javascriptreact',
+          'typescriptreact',
+          'ejs',
+          'pug',
+          'templ',
+        },
+      })
+
+      vim.lsp.enable 'emmet_ls'
       -- Telescope is a fuzzy finder that comes with a lot of different things that
       -- it can fuzzy find! It's more than just a "file finder", it can search
       -- many different aspects of Neovim, your workspace, LSP, and more!
@@ -414,6 +430,7 @@ require('lazy').setup({
       'saghen/blink.cmp',
     },
     config = function()
+      vim.filetype.add { extension = { ejs = 'ejs' } }
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -592,6 +609,13 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        html = {
+          filetypes = { 'html', 'ejs' },
+        },
+
+        emmet_ls = {
+          filetypes = { 'html', 'css', 'ejs' },
+        },
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
@@ -870,6 +894,7 @@ require('lazy').setup({
         'javascript',
         'typescript',
         'jsdoc',
+        'embedded_template',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -882,6 +907,11 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+      vim.treesitter.language.register('html', 'ejs')
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
