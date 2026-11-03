@@ -879,23 +879,7 @@ require('lazy').setup({
     build = ':TSUpdate',
 
     config = function()
-      require('nvim-treesitter').install {
-        'bash',
-        'c',
-        'diff',
-        'html',
-        'lua',
-        'luadoc',
-        'markdown',
-        'markdown_inline',
-        'query',
-        'vim',
-        'vimdoc',
-        'javascript',
-        'typescript',
-        'jsdoc',
-        'embedded_template',
-      }
+      require('nvim-treesitter').setup {}
 
       vim.api.nvim_create_autocmd('FileType', {
         pattern = {
